@@ -4,7 +4,7 @@ var result = 0;
 
 $(document).ready(function () {
   for (var i = 1; i <= 9; ++ i) { 
-    var box = $("<div>").addClass("chess-box");
+    var box = $("<div>").addClass("chess-box").addClass("col-md-4");
     box.attr("pos", i);
     $('.chess').append(box);
   }
@@ -28,7 +28,18 @@ $(document).ready(function () {
     check();
    
     if (result != 0) {
-      setTimeout('alert("PLAYER "+ result + " WIN!");',500);
+      setTimeout(function () {
+				 swal({
+					  title:"PLAYER "+ result + " WIN!",
+					  html:true,
+					  confirmButtonColor: "#057748",
+					  confirmButtonText: "Restart",
+					  showCancelButton: false,
+					  closeOnConfirm: true,
+					  animation: "slide-from-top"
+					  },function() {
+					  })}
+      ,500);
     }
   });
 });

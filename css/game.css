@@ -1,15 +1,10 @@
 .chess {
-	display: inline-block;
 	background-color: whitesmoke;
 	padding-top: 10px;
 	padding-bottom: 10px;
-	width:210px;
 }
 
 .chess-box {
-	display: inline-block;
-	background-color: red;
-	height: 50px;
-	width: 50px;
-	margin: 10px;
+	height: 100px;
+	padding: 20px;
 }
