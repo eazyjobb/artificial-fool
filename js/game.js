@@ -4,60 +4,69 @@ var result = 0;
 
 $(document).ready(function () {
   for (var i = 1; i <= 9; ++ i) { 
-    var box = $("<div>").addClass("chess-box").addClass("col-md-4");
+    var box = $("<div>").addClass("chess-box");
     box.attr("pos", i);
     $('.chess').append(box);
   }
-  $('.chess-box').click(function() {
-    if(result != 0) return;
-      if($(this).hasClass('used'))
-          return;
 
-      var pos = $(this).attr('pos');
-
-      if (turn == 0) {
-        $(this).css({"background-color":"black"});
-      } else {
-        $(this).css({"background-color":"white"});
-      }
-
-      $(this).addClass('used');
-      side[pos] = turn + 1;
-      turn = 1 - turn;
-
-      check();
-   
-      if (result != 0) {
-        var str = "PLAYER "+ result + " WIN!";
-        if (result == -1)
-          str = "DRAW";
-        setTimeout(function () {
-          swal({
-            title:str,
-            html:true,
-            confirmButtonColor: "#057748",
-            confirmButtonText: "Restart",
-            showCancelButton: false,
-            closeOnConfirm: true,
-            animation: "slide-from-top"
-            },function() {
-              restart();
-            })}
-        , 500);
-      }
-  });
+  $('.chess-box').click(chess_box_click);
+  set_turn_info();
 });
 
-function restart() {
-  for (var i = 0; i < 9; ++ i) {
-    side[i] = 0;
-    if($('.chess-box:eq(' + i + ')').hasClass("used")) {
-      $('.chess-box:eq(' + i + ')').removeClass("used");
-      $('.chess-box:eq(' + i + ')').css({"background-color":"whitesmoke"});
-    }
+function chess_box_click() {
+  if(result != 0) return;
+  if($(this).hasClass('used'))
+      return;
+
+  var pos = $(this).attr('pos');
+
+  var icon;
+
+  if (turn == 0)
+    icon = $('<span>').addClass('glyphicon').addClass('glyphicon-remove').addClass('player1');
+  else
+    icon = $('<span>').addClass('glyphicon').addClass('glyphicon-record').addClass('player2');
+
+  $(this).append(icon);
+  $(this).addClass('used');
+  side[pos] = turn + 1;
+  turn = 1 - turn;
+  set_turn_info();
+
+  check();
+
+  if (result != 0) {
+    var str = "PLAYER "+ result + " WIN!";
+    if (result == -1)
+      str = "DRAW";
+    setTimeout(function () {
+      swal({
+        title:str,
+        html:true,
+        confirmButtonColor: "#057748",
+        confirmButtonText: "Restart",
+        showCancelButton: false,
+        closeOnConfirm: true,
+        animation: "slide-from-top"
+        },function() {
+          restart();
+        })
+    }, 100);
   }
+}
+
+function restart() {
+  $('.chess-box').remove();
+  for (var i = 1; i <= 9; ++ i) {
+    side[i] = 0;
+    var box = $("<div>").addClass("chess-box");
+    box.attr("pos", i);
+    $('.chess').append(box);
+  }
+  $('.chess-box').click(chess_box_click);
   turn = 0;
   result = 0;
+  set_turn_info();
 }
 
 function check() {
@@ -73,4 +82,17 @@ function check() {
   }
   if ($('.used').length >= 9)
     result = -1;
+}
+
+function set_turn_info() {
+  $('.turn-info > div').remove();
+  var info = $('<div>');
+  var info_p = $('<p>').html('TURN FOR PLAYER' + (turn + 1));
+  var icon;
+  if (turn == 0)
+    icon = $('<span>').addClass('glyphicon').addClass('glyphicon-remove').addClass('player1');
+  else
+    icon = $('<span>').addClass('glyphicon').addClass('glyphicon-record').addClass('player2');
+  info.append(info_p).append(icon);
+  $('.turn-info').append(info);
 }

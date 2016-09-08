@@ -1,10 +1,55 @@
+.game-space {
+  position: absolute;
+  left:calc(50% - 165px);
+  background-color: whitesmoke;
+}
+
+.big-title {
+  padding: 10px;
+  font-size: 3em;
+}
 .chess {
-	background-color: whitesmoke;
-	padding-top: 10px;
-	padding-bottom: 10px;
+  width:350px;
+  padding: 10px;
 }
 
 .chess-box {
-	height: 100px;
-	padding: 20px;
+  display:inline-block;
+  border: 1px solid black;
+  padding: 20px;
+  width: 110px;
+  height: 110px;
+  text-align:center;
+  vertical-align: middle;
+  overflow: hidden;
+}
+
+.player1, .player2 {
+  font-size: 5em;
+  text-align:center;
+  vertical-align: middle;
+}
+
+.player1 {
+  color: red;
+}
+
+.player2 {
+  color: green;
+}
+
+.turn-info {
+  padding:10px;
+  display:block;
+  vertical-align: middle;
+}
+
+.turn-info p{
+  font-size:1.5em;
+  float:left;
+}
+
+.turn-info span {
+  font-size: 1.5em;
+  float:right;
 }
