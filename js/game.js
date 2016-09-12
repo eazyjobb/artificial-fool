@@ -11,6 +11,8 @@ $(document).ready(function () {
 
   $('.chess-box').click(chess_box_click);
   set_turn_info();
+  
+  ai_control();
 });
 
 function chess_box_click() {
@@ -53,6 +55,8 @@ function chess_box_click() {
         })
     }, 100);
   }
+  
+  ai_control();
 }
 
 function restart() {
@@ -67,6 +71,8 @@ function restart() {
   turn = 0;
   result = 0;
   set_turn_info();
+  
+  ai_control();
 }
 
 function check() {
