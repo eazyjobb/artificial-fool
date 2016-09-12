@@ -1,8 +1,8 @@
 // ai global var
 var hash = new Array();
 var ai_level = 2;
-var player_turn = 0;
-var com_turn = 1;
+var player_turn = 1;
+var com_turn = 0;
 var ai_strategy
 // ai global var end
 /*
@@ -144,15 +144,14 @@ function dfs(state, who, dep) {
 	
 	add_hash(state, res);
 	
-	console.log(state, ' ', res, ' ', who, ' ', sel);
+	//console.log(state, ' ', res, ' ', who, ' ', sel);
 	
 	return res;
 }
 
 function ai_control() {
 	if (turn != com_turn) return ;
-	console.log('ai_control');
-	
+	//console.log('ai_control');	
 	if (ai_level == 1) {
 		for (var i = 1; i < 10; ++i) {
 			console.log(i, ' ', side[i], ' ', typeof side[i]);
@@ -164,7 +163,7 @@ function ai_control() {
 		}	 
 	}
 	else {
-		console.log('init');
+		//console.log('init');
 		var t = 0, tt = 0;
 		var state = new Array();
 		for (var i = 0; i < 10; ++i) state[i] = side[i];
@@ -176,7 +175,7 @@ function ai_control() {
 				var sw = dfs(state, player_turn, com_turn);
 				state[i] = 0;
 				
-				console.log("sel: ", i, ' ', "sw: ", sw, ' ', com_turn);
+				//console.log("sel: ", i, ' ', "sw: ", sw, ' ', com_turn);
 				
 				if (sw == com_turn) {
 					t = i;
@@ -188,11 +187,11 @@ function ai_control() {
 		}
 		
 		if (t == 0) t = tt;
-		console.log(tt);
-		console.log('final select  ', t);  ////fuck
-		if (t > 0) 
-			$("div.chess-box:eq(" + (t-1) + ")").trigger("click");
-		else 
-			$("div.chess-box:eq(" + (t-1) + ")").trigger("click");
+		//console.log(tt);
+		//console.log('final select  ', t);  ////fuck
+		//if (t > 0) 
+		$("div.chess-box:eq(" + (t-1) + ")").trigger("click");
+		//else 
+		//	$("div.chess-box:eq(" + (t-1) + ")").trigger("click");
 	}
 }
