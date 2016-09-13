@@ -46,12 +46,23 @@ function chess_box_click() {
         title:str,
         html:true,
         confirmButtonColor: "#057748",
-        confirmButtonText: "Restart",
-        showCancelButton: false,
+        confirmButtonText: "Play As P2",
+        showCancelButton: true,
+        cancelButtonText: "Play As P1",
+        cancelButtonColor: "#057748",
         closeOnConfirm: true,
         animation: "slide-from-top"
-        },function() {
-          restart();
+        },function(ret) {
+		   if (ret) {
+   		     console.log("p2");
+		     com_turn = 0;
+		     player_turn = 1;
+		   } else {
+		     console.log("p1");
+  		     player_turn = 0;
+		     com_turn = 1;
+		   }
+		   restart();
         })
     }, 100);
   }
@@ -68,8 +79,9 @@ function restart() {
     $('.chess').append(box);
   }
   $('.chess-box').click(chess_box_click);
-  turn = 0;
+
   result = 0;
+  turn = 0;
   set_turn_info();
   
   ai_control();

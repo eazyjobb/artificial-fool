@@ -5,53 +5,6 @@ var player_turn = 1;
 var com_turn = 0;
 var ai_strategy
 // ai global var end
-/*
-$(document).ready(function () {
-	console.log('ai init');
-	
-	var fun = chess_box_click;
-	
-	console.log(fun);
-	
-	function for_switch_ai_control() {
-		console.log('swith success');
-		ai_control();
-		fun();
-	}
-	
-	chess_box_click = for_switch_ai_control;
-	
-	console.log(chess_box_click);
-	console.log(fun);
-	
-	ai_control();
-	
-	console.log('ai init end');
-	
-	var fun2 = restart;
-	
-  for (var i = 1; i <= 9; ++ i) { 
-    var box = $("<div>").addClass("chess-box");
-    box.attr("pos", i);
-    $('.chess').append(box);
-  }
-
-  $('.chess-box').click(chess_box_click);
-  set_turn_info();
-  ai_control();
-  
-  
-   var f = .click
-   function l() {
-     f();
-	 awddfsaf
-   }	   
-   click = l;
-  
-});
-*/
-
-//////////////////////////
 
 function get_key(state) {
 	var t = 0;
@@ -150,8 +103,9 @@ function dfs(state, who, dep) {
 }
 
 function ai_control() {
+	console.log(turn, com_turn, player_turn);
 	if (turn != com_turn) return ;
-	//console.log('ai_control');	
+	console.log('ai_control');
 	if (ai_level == 1) {
 		for (var i = 1; i < 10; ++i) {
 			console.log(i, ' ', side[i], ' ', typeof side[i]);
