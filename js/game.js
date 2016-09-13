@@ -13,6 +13,31 @@ $(document).ready(function () {
   set_turn_info();
   
   ai_control();
+
+  setTimeout(function () {
+    swal({
+	  title:"Welcome",
+	  html:true,
+	  confirmButtonColor: "#057748",
+	  confirmButtonText: "Play As P2",
+	  showCancelButton: true,
+	  cancelButtonText: "Play As P1",
+	  cancelButtonColor: "#057748",
+	  closeOnConfirm: true,
+	  animation: "slide-from-top"
+	  },function(ret) {
+	    if (ret) {
+   		  console.log("p2");
+	      com_turn = 0;
+		  player_turn = 1;
+		} else {
+		  console.log("p1");
+		  player_turn = 0;
+		  com_turn = 1;
+		}
+		restart();
+	  })
+  }, 100);
 });
 
 function chess_box_click() {
