@@ -3,7 +3,6 @@ var hash = new Array();
 var ai_level = 2;
 var player_turn = 1;
 var com_turn = 0;
-var ai_strategy
 // ai global var end
 
 function get_key(state) {
