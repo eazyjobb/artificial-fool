@@ -1,57 +1,72 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>Flot Examples: Basic Usage</title>
-	<link href="css/examples.css" rel="stylesheet" type="text/css">
-	<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="../../excanvas.min.js"></script><![endif]-->
+	<title>TSP - Black Evil Power</title>
+
+	<link href="css/semantic/semantic.min.css" rel="stylesheet" type="text/css">
+
 	<script language="javascript" type="text/javascript" src="js/jquery-3.0.0.js"></script>
+	<script language="javascript" type="text/javascript" src="css/semantic/semantic.min.js"></script>
 	<script language="javascript" type="text/javascript" src="js/jquery.flot.js"></script>
-	<script type="text/javascript">
 
-	$(function() {
+	<script language="javascript" type="text/javascript" src="js/tsp.js"></script>
 
-		var d1 = [];
-		for (var i = 0; i < 14; i += 0.5) {
-			d1.push([i, Math.sin(i)]);
-		}
-
-		var d2 = [[0, 3], [4, 8], [8, 5], [9, 13]];
-
-		// A null signifies separate line segments
-
-		var d3 = [[0, 12], [7, 12], null, [7, 2.5], [12, 2.5]];
-
-		$.plot("#placeholder", [ d1, d2, d3 ]);
-
-		// Add the Flot version string to the footer
-
-		$("#footer").prepend("Flot " + $.plot.version + " &ndash; ");
-	});
-
-	</script>
+	<!-- put your algorithm js here, do not modify anything related to ui, except me-->
 </head>
-<body>
 
-	<div id="header">
-		<h2>Basic Usage</h2>
-	</div>
+<body> <div class="ui grid">
 
-	<div id="content">
-
-		<div class="demo-container">
-			<div id="placeholder" class="demo-placeholder"></div>
+<div class="ui row" style="margin-top: 50px;">
+	<div class="ui sixteen wide column">
+		<div class="ui center aligned huge header">
+			TSP - Black Evil Power
 		</div>
+	</div>
+</div>
 
-		<p>You don't have to do much to get an attractive plot.  Create a placeholder, make sure it has dimensions (so Flot knows at what size to draw the plot), then call the plot function with your data.</p>
+<div class="ui row">
+	<div class="ui three wide column"> </div>
 
-		<p>The axes are automatically scaled.</p>
-
+	<div class="ui ten wide column">
+		<div class="ui selection dropdown">
+			<input name="mode-selection" type="hidden">
+			<i class="dropdown icon"></i>
+			<div class="default text">Mode</div>
+			<div class="menu">
+				<div class="item" data-value="1">Back Fire Algorithm</div>
+				<div class="item" data-value="0">Genetic</div>
+			</div>
+		</div>
+		<div class="ui selection dropdown">
+			<input name="data-selection" type="hidden">
+			<i class="dropdown icon"></i>
+			<div class="default text">Data Set</div>
+			<div class="menu">
+				<div class="item" data-value="1">Data A</div>
+				<div class="item" data-value="0">Data B</div>
+			</div>
+		</div>
 	</div>
 
-	<div id="footer">
-		Copyright &copy; 2007 - 2014 IOLA and Ole Laursen
-	</div>
+</div>
 
-</body>
+<div class="ui row">
+	<div class="ui three wide column"> </div>
+
+	<div class="ui ten wide column" style="min-height: 550px;">
+		<div id="placeholder" style="height:100%; width:100%;"> </div>
+	</div>
+</div>
+
+<div class="ui row">
+	<div class="ui three wide column"> </div>
+
+	<div class="ui ten wide column">
+		<span>Copyright &copy; 2016 Black Evil Power</span>
+	</div>
+</div>
+
+</div> </body>
 </html>
