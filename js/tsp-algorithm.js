@@ -283,7 +283,7 @@ var tsp_data = [
 150, 91.6467647724, 166.3541158474]
 ];
 
-var gene_data, res_data;
+var gene_data, res_data, mutate_rate = 0.1;
 
 $(document).ready(function () {
 	$('#calculate').click(function () {
@@ -292,7 +292,7 @@ $(document).ready(function () {
 		var gene_size = $('input[name=size-selection]').val();
 		var iters = $('input[name=iter-selection]').val();
 
-		console.log(algorithm, data_set_name, gene_size, iters);
+		//console.log(algorithm, data_set_name, gene_size, iters);
 
 		if ( ('' === algorithm) || ('' === data_set_name) || ('' === gene_size) || ('' === iters)) {
 			swal({
@@ -308,29 +308,46 @@ $(document).ready(function () {
 
 		var gb_size = tsp_data[data_set_name][0];
 
-		console.log(data_set_name, gb_size);
+		//console.log(data_set_name, gb_size);
 
 		gene_data = [];
-		res_data = rand_init(gene_size, gb_size);
 
-		console.log(res_data);
+		console.log('init');
+		res_data = rand_init(gene_size, gb_size, data_set_name);
+		console.log('init fin');
 
-		for (var i = 0; i < iters; ++ i) {
-			//res_data = extand(res_data, gene_size, gb_size, algorithm);
-			//res_data = natural_select(res_data, gene_size, gb_size, data_set_name);
+		//console.log(res_data);
+
+		for (var cur = 0; cur < (iters / 20); ++ cur) {
+			for (var i = 0; i < 20; ++ i) {
+
+				extand(res_data, gene_size, gb_size, algorithm, data_set_name);
+
+				res_data.sort(function(a, b) {
+					return calculate(a, gb_size, data_set_name) - calculate(b, gb_size, data_set_name);
+				});
+				while (res_data.length > gene_size)
+					res_data.pop();
+
+				gene_data.push([cur * 20 + i, calculate(res_data[0], gb_size, data_set_name)]);
+
+				console.log(i);
+			}
+
+			for (var i = 0; i < gene_size; ++ i)
+				greedy(res_data[i], gb_size, data_set_name);
 			switch_data(res_data[0], gb_size, data_set_name);
-			gene_data.push([i, calculate(res_data[0], gb_size, data_set_name)]);
 		}
 
 		down.setData([gene_data]);
 		down.setupGrid();
 		down.draw();
 
-		console.log(gene_data);
+		//console.log(gene_data);
 	});
 });
 
-function rand_init(gene_size, gb_size) {
+function rand_init(gene_size, gb_size, data_set_name) {
 	var res = [];
 	for (var i = 0; i < gene_size; ++ i) {
 		var visit = new Array(gb_size);
@@ -343,6 +360,8 @@ function rand_init(gene_size, gb_size) {
 			visit[x] = 1;
 			local_res.push(x);
 		}
+		local_res.push(0);
+		greedy(local_res, gb_size, data_set_name);
 		res.push(local_res);
 	}
 	return res;
@@ -360,23 +379,86 @@ function switch_data(res, gb_size, data_set_name) {
 }
 
 function calculate(res, gb_size, data_set_name) {
+	if (res[res.length - 1] != 0)
+		return res[res.length - 1];
+
 	var ans = 0.0;
 
 	for (var i = 0; i < gb_size - 1; ++ i) {
 		ans += Math.sqrt(
-			(tsp_data[data_set_name][i * 3 + 2] - tsp_data[data_set_name][i * 3 + 5]) *
-			(tsp_data[data_set_name][i * 3 + 2] - tsp_data[data_set_name][i * 3 + 5]) +
-			(tsp_data[data_set_name][i * 3 + 3] - tsp_data[data_set_name][i * 3 + 6]) *
-			(tsp_data[data_set_name][i * 3 + 3] - tsp_data[data_set_name][i * 3 + 6])
+			(tsp_data[data_set_name][res[i] * 3 + 2] - tsp_data[data_set_name][res[i + 1] * 3 + 2]) *
+			(tsp_data[data_set_name][res[i] * 3 + 2] - tsp_data[data_set_name][res[i + 1] * 3 + 2]) +
+			(tsp_data[data_set_name][res[i] * 3 + 3] - tsp_data[data_set_name][res[i + 1] * 3 + 3]) *
+			(tsp_data[data_set_name][res[i] * 3 + 3] - tsp_data[data_set_name][res[i + 1] * 3 + 3])
 		);
 	}
 
 	ans += Math.sqrt(
-		(tsp_data[data_set_name][2] - tsp_data[data_set_name][gb_size * 3 - 1]) *
-		(tsp_data[data_set_name][2] - tsp_data[data_set_name][gb_size * 3 - 1]) +
-		(tsp_data[data_set_name][3] - tsp_data[data_set_name][gb_size * 3]) *
-		(tsp_data[data_set_name][3] - tsp_data[data_set_name][gb_size * 3])
+		(tsp_data[data_set_name][res[gb_size - 1] * 3 + 2] - tsp_data[data_set_name][res[0] * 3 + 2]) *
+		(tsp_data[data_set_name][res[gb_size - 1] * 3 + 2] - tsp_data[data_set_name][res[0] * 3 + 2]) +
+		(tsp_data[data_set_name][res[gb_size - 1] * 3 + 3] - tsp_data[data_set_name][res[0] * 3 + 3]) *
+		(tsp_data[data_set_name][res[gb_size - 1] * 3 + 3] - tsp_data[data_set_name][res[0] * 3 + 3])
 	);
 
+	res[res.length - 1] = ans;
 	return ans;
+}
+
+function extand(res_data, gene_size, gb_size, algorithm, data_set_name) {
+	if (algorithm != undefined) {
+		for (var i = 0; i < 10; ++ i)
+		for (var j = 0; j < gene_size; ++ j) {
+			var p = Math.random();
+			if (p <= mutate_rate) {
+				new_res = [];
+				for (var k = 0; k < gb_size; ++ k)
+					new_res.push(res_data[j][k]);
+
+				for (var avg = 0; avg < 5; ++ avg) {
+					var x = Math.floor(gb_size * Math.random());
+					var y = Math.floor(gb_size * Math.random());
+					while (y == x) {
+						y = Math.floor(gb_size * Math.random());
+					}
+					var t = new_res[x];
+					new_res[x] = new_res[y];
+					new_res[y] = t;
+				}
+
+				new_res.push(0);
+				//greedy(new_res, gb_size, data_set_name);
+
+				res_data.push(new_res);
+			}
+		}
+	}
+}
+
+function greedy(res, gb_size, data_set_name) {
+	new_res = [];
+	for (var k = 0; k < gb_size; ++ k)
+		new_res.push(res[k]);
+	new_res.push(0);
+	calculate(new_res, gb_size, data_set_name);
+
+	for (var i = 0; i < gb_size; ++ i)
+		for (var j = i + 1; j < gb_size; ++ j) {
+			var t = new_res[i];
+			new_res[i] = new_res[j];
+			new_res[j] = t;
+
+			var old = new_res[gb_size];
+			new_res[gb_size] = 0;
+
+			var ans = calculate(new_res, gb_size, data_set_name);
+			
+			if (ans >= old) {
+				t = new_res[i];
+				new_res[i] = new_res[j];
+				new_res[j] = t;
+			}
+		}
+
+	for (var k = 0; k <= gb_size; ++ k)
+		res[k] = new_res[k];
 }
