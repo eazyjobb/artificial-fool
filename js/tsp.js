@@ -1,5 +1,8 @@
-$(document).ready(function () {
+var map, down;
 
+$(document).ready(function () {
+	$('.ui.dropdown').dropdown();
+	
 	var d1 = [];
 	for (var i = 0; i < 14; i += 0.5) {
 		d1.push([i, Math.sin(i)]);
@@ -11,9 +14,9 @@ $(document).ready(function () {
 
 	var d3 = [[0, 12], [7, 12], null, [7, 2.5], [12, 2.5]];
 
-	$.plot("#placeholder", [ d1, d2, d3 ]);
+	var d4 = [[1, 1], [2, 1], [0,2]];
+	console.log(d1, d2, d3);
 
-	// Add the Flot version string to the footer
-
-	$("#footer").prepend("Flot " + $.plot.version + " &ndash; ");
+	map = $.plot("#res-map", [d1, d2, d3, d4]);
+	down = $.plot("#res-down", [d1, d2, d3, d4]);
 });

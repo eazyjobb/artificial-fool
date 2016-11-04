@@ -16,20 +16,19 @@
 	<!-- put your algorithm js here, do not modify anything related to ui, except me-->
 </head>
 
-<body> <div class="ui grid">
+<body> <div class="ui grid container">
 
 <div class="ui row" style="margin-top: 50px;">
 	<div class="ui sixteen wide column">
 		<div class="ui center aligned huge header">
-			TSP - Black Evil Power
+			TSP - Artificial Fool
 		</div>
 	</div>
 </div>
 
 <div class="ui row">
-	<div class="ui three wide column"> </div>
 
-	<div class="ui ten wide column">
+	<div class="ui sixteen wide column center aligned">
 		<div class="ui selection dropdown">
 			<input name="mode-selection" type="hidden">
 			<i class="dropdown icon"></i>
@@ -48,23 +47,45 @@
 				<div class="item" data-value="0">Data B</div>
 			</div>
 		</div>
+		<div class="ui selection dropdown">
+			<input name="size-selection" type="hidden">
+			<i class="dropdown icon"></i>
+			<div class="default text">generation size</div>
+			<div class="menu">
+				<div class="item" data-value="100">100</div>
+				<div class="item" data-value="500">500</div>
+				<div class="item" data-value="1000">1000</div>
+			</div>
+		</div>
+		<div class="ui selection dropdown">
+			<input name="iter-selection" type="hidden">
+			<i class="dropdown icon"></i>
+			<div class="default text">Number of Interation</div>
+			<div class="menu">
+				<div class="item" data-value="100">100 iters</div>
+				<div class="item" data-value="500">500 iters</div>
+				<div class="item" data-value="1000">1000 iters</div>
+			</div>
+		</div>
+		<button class="positive ui button" id="calculate">Calculate</button>
 	</div>
 
 </div>
 
 <div class="ui row">
-	<div class="ui three wide column"> </div>
-
-	<div class="ui ten wide column" style="min-height: 550px;">
-		<div id="placeholder" style="height:100%; width:100%;"> </div>
+	<div class="ui sixteen wide column center aligned huge header"> Map </div>
+	<div class="ui sixteen wide column" style="min-height: 550px;">
+		<div id="res-map" style="height:100%; width:100%;"> </div>
+	</div>
+	<div class="ui sixteen wide column center aligned huge header"> Result </div>
+	<div class="ui sixteen wide column" style="min-height: 550px;">
+		<div id="res-down" style="height:100%; width:100%;"> </div>
 	</div>
 </div>
 
 <div class="ui row">
-	<div class="ui three wide column"> </div>
-
 	<div class="ui ten wide column">
-		<span>Copyright &copy; 2016 Black Evil Power</span>
+		<span>Copyright &copy; 2016 Artificial Fool</span>
 	</div>
 </div>
 
