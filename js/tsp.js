@@ -1,4 +1,4 @@
-var map, down;
+var map, down, best;
 
 $(document).ready(function () {
 	$('.ui.dropdown').dropdown();
@@ -19,4 +19,5 @@ $(document).ready(function () {
 
 	map = $.plot("#res-map", [d1, d2, d3, d4]);
 	down = $.plot("#res-down", [d1, d2, d3, d4]);
+	best = $.plot("#best-map", [d1, d2, d3, d4]);
 });

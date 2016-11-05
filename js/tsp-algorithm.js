@@ -575,6 +575,7 @@ $(document).ready(function () {
 		var data_set_name = $('input[name=data-selection]').val();
 		var gene_size = $('input[name=size-selection]').val();
 		var iters = $('input[name=iter-selection]').val();
+		var view = $('input[name=super-selection]').val();
 
 		//console.log(algorithm, data_set_name, gene_size, iters);
 
@@ -614,7 +615,8 @@ $(document).ready(function () {
 				var st = +new Date();
 				while (i < n) {
 					extand(res_data, gene_size, gb_size, algorithm, data_set_name);
-					greedy(res_data[0], gb_size, data_set_name);
+					if (view > 0)
+						greedy(res_data[0], gb_size, data_set_name);
 					res_data.sort(function(a, b) {
 						return calculate(a, gb_size, data_set_name) - calculate(b, gb_size, data_set_name);
 					});
@@ -672,10 +674,18 @@ function switch_data(res, gb_size, data_set_name) {
 		data.push([tsp_data[data_set_name][res[i] * 3 + 2], tsp_data[data_set_name][res[i] * 3 + 3]]);
 	}
 	data.push([tsp_data[data_set_name][res[0] * 3 + 2], tsp_data[data_set_name][res[0] * 3 + 3]]);
+	data2 = [];
+	for (var i = 0; i < gb_size - 1; ++ i) {
+		data2.push([tsp_data[data_set_name][tsp_best[data_set_name][i] * 3 + 2], tsp_data[data_set_name][tsp_best[data_set_name][i] * 3 + 3]]);
+	}
+	data2.push([tsp_data[data_set_name][tsp_best[data_set_name][0] * 3 + 2], tsp_data[data_set_name][tsp_best[data_set_name][0] * 3 + 3]]);
 	//console.log(data);
 	map.setData([data]);
 	map.setupGrid();
 	map.draw();
+	best.setData([data2]);
+	best.setupGrid();
+	best.draw();
 	down.setData([gene_data, best_data]);
 	down.setupGrid();
 	down.draw();
@@ -714,7 +724,7 @@ function calculate(res, gb_size, data_set_name, bres) {
 
 function extand(res_data, gene_size, gb_size, algorithm, data_set_name) {
 	if (algorithm != undefined) {
-		//for (var i = 0; i < 10; ++ i)
+		for (var i = 0; i < 2; ++ i) {
 		for (var j = 0; j < gene_size; ++ j) {
 			var p = Math.random();
 			if (p <= mutate_rate) {
@@ -735,8 +745,20 @@ function extand(res_data, gene_size, gb_size, algorithm, data_set_name) {
 				var chunk1 = new_res.splice(0, z);
 
 				new_res = chunk1.concat(chunk, new_res);
+				new_res.push(0);
+				//greedy(new_res, gb_size, data_set_name);
 
-				for (avg = 0; avg < 5; ++ avg) {
+				res_data.push(new_res);
+			}
+		}
+		for (var j = 0; j < gene_size; ++ j) {
+			var p = Math.random();
+			if (p <= mutate_rate) {
+				new_res = [];
+				for (var k = 0; k < gb_size; ++ k)
+					new_res.push(res_data[j][k]);
+
+				for (avg = 0; avg < 50; ++ avg) {
 					var x = Math.floor(gb_size * Math.random());
 					var y = Math.floor(gb_size * Math.random());
 					while (y == x) {
@@ -750,6 +772,7 @@ function extand(res_data, gene_size, gb_size, algorithm, data_set_name) {
 
 				res_data.push(new_res);
 			}
+		}
 		}
 	}
 }

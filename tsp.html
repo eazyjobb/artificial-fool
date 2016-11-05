@@ -59,6 +59,7 @@
 				<div class="item" data-value="100">100 samples</div>
 				<div class="item" data-value="500">500 samples</div>
 				<div class="item" data-value="1000">1000 samples</div>
+				<div class="item" data-value="5000">5000 samples</div>
 			</div>
 		</div>
 		<div class="ui selection dropdown">
@@ -74,15 +75,30 @@
 				<div class="item" data-value="1000">1000 iters</div>
 			</div>
 		</div>
+		<div class="ui selection dropdown">
+			<input name="super-selection" type="hidden">
+			<i class="dropdown icon"></i>
+			<div class="default text">super</div>
+			<div class="menu">
+				<div class="item" data-value="0">Good View Mode</div>
+				<div class="item" data-value="1">Good Iter Mode</div>
+			</div>
+		</div>
 		<button class="positive ui button" id="calculate">Calculate</button>
 	</div>
 
 </div>
 
 <div class="ui row">
-	<div class="ui sixteen wide column center aligned huge header"> Map </div>
-	<div class="ui sixteen wide column" style="min-height: 550px;">
+	<div class="ui eight wide column center aligned huge header"> Map </div>
+	<div class="ui eight wide column center aligned huge header"> Best Map </div>
+</div>
+<div class="ui row grid">
+	<div class="ui eight wide column" style="min-height: 400px;">
 		<div id="res-map" style="height:100%; width:100%;"> </div>
+	</div>
+	<div class="ui eight wide column" style="min-height: 400px;">
+		<div id="best-map" style="height:100%; width:100%;"> </div>
 	</div>
 	<div class="ui sixteen wide column center aligned huge header"> Result </div>
 	<div class="ui sixteen wide column" style="min-height: 550px;">
