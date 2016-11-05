@@ -283,7 +283,291 @@ var tsp_data = [
 150, 91.6467647724, 166.3541158474]
 ];
 
-var gene_data, res_data, mutate_rate = 0.1;
+var tsp_best= [
+[1
+,41
+,39
+,117
+,112
+,115
+,28
+,62
+,105
+,128
+,16
+,45
+,5
+,11
+,76
+,109
+,61
+,129
+,124
+,64
+,69
+,86
+,88
+,26
+,7
+,97
+,70
+,107
+,127
+,104
+,43
+,34
+,17
+,31
+,27
+,19
+,100
+,15
+,29
+,24
+,116
+,95
+,79
+,87
+,12
+,81
+,103
+,77
+,94
+,89
+,110
+,98
+,68
+,63
+,48
+,25
+,113
+,32
+,36
+,84
+,119
+,111
+,123
+,101
+,82
+,57
+,9
+,56
+,65
+,52
+,75
+,74
+,99
+,73
+,92
+,38
+,106
+,53
+,120
+,58
+,49
+,72
+,91
+,6
+,102
+,10
+,14
+,67
+,13
+,96
+,122
+,55
+,60
+,51
+,42
+,44
+,93
+,37
+,22
+,47
+,40
+,23
+,33
+,21
+,126
+,121
+,78
+,66
+,85
+,125
+,90
+,59
+,30
+,83
+,3
+,114
+,108
+,8
+,18
+,46
+,80
+,118
+,20
+,4
+,35
+,54
+,2
+,50
+,130
+,71, 0
+],[1
+,98
+,103
+,82
+,95
+,107
+,5
+,100
+,143
+,97
+,146
+,26
+,75
+,18
+,142
+,85
+,65
+,132
+,137
+,50
+,55
+,58
+,141
+,83
+,56
+,90
+,46
+,92
+,54
+,138
+,134
+,131
+,32
+,23
+,38
+,67
+,43
+,109
+,51
+,20
+,25
+,110
+,81
+,29
+,86
+,135
+,70
+,108
+,102
+,114
+,99
+,19
+,2
+,37
+,6
+,28
+,9
+,42
+,120
+,47
+,139
+,40
+,53
+,118
+,24
+,12
+,116
+,101
+,41
+,57
+,39
+,127
+,69
+,36
+,61
+,11
+,148
+,130
+,17
+,66
+,60
+,140
+,117
+,129
+,27
+,31
+,123
+,74
+,13
+,106
+,91
+,119
+,68
+,128
+,45
+,71
+,44
+,64
+,112
+,136
+,145
+,144
+,49
+,147
+,72
+,80
+,14
+,122
+,77
+,133
+,15
+,78
+,21
+,150
+,115
+,4
+,104
+,22
+,125
+,149
+,62
+,3
+,113
+,10
+,94
+,88
+,121
+,79
+,59
+,16
+,111
+,105
+,33
+,126
+,52
+,93
+,124
+,35
+,96
+,89
+,8
+,7
+,84
+,30
+,63
+,48
+,73
+,76
+,34
+,87,0
+]
+];
+
+var gene_data, res_data, mutate_rate = 1, best_data;
 
 $(document).ready(function () {
 	$('#calculate').click(function () {
@@ -313,12 +597,15 @@ $(document).ready(function () {
 		//console.log(data_set_name, gb_size);
 
 		gene_data = [];
+		best_data = [];
 
 		console.log('init');
 		res_data = rand_init(gene_size, gb_size, data_set_name);
 		console.log('init fin');
 
 		//console.log(res_data);
+		
+		best_res = calculate(tsp_best[data_set_name], gb_size, data_set_name, true);
 
 		var test = function(n, callback) {
 			var result = 0;
@@ -327,7 +614,7 @@ $(document).ready(function () {
 				var st = +new Date();
 				while (i < n) {
 					extand(res_data, gene_size, gb_size, algorithm, data_set_name);
-
+					greedy(res_data[0], gb_size, data_set_name);
 					res_data.sort(function(a, b) {
 						return calculate(a, gb_size, data_set_name) - calculate(b, gb_size, data_set_name);
 					});
@@ -336,6 +623,7 @@ $(document).ready(function () {
 
 					console.log(n, [i, calculate(res_data[0], gb_size, data_set_name)]);
 					gene_data.push([i, calculate(res_data[0], gb_size, data_set_name)]);
+					best_data.push([i, best_res]);
 					switch_data(res_data[0], gb_size, data_set_name);
 
 					++ i;
@@ -378,21 +666,27 @@ function rand_init(gene_size, gb_size, data_set_name) {
 }
 
 function switch_data(res, gb_size, data_set_name) {
-	console.log("CALL S", gene_data.length);
+	//console.log("CALL S", gene_data.length);
 	data = [];
 	for (var i = 0; i < gb_size - 1; ++ i) {
-		data.push([tsp_data[data_set_name][i * 3 + 2], tsp_data[data_set_name][i * 3 + 3]]);
+		data.push([tsp_data[data_set_name][res[i] * 3 + 2], tsp_data[data_set_name][res[i] * 3 + 3]]);
 	}
-	data.push([tsp_data[data_set_name][2], tsp_data[data_set_name][3]]);
+	data.push([tsp_data[data_set_name][res[0] * 3 + 2], tsp_data[data_set_name][res[0] * 3 + 3]]);
+	//console.log(data);
 	map.setData([data]);
 	map.setupGrid();
 	map.draw();
-	down.setData([gene_data]);
+	down.setData([gene_data, best_data]);
 	down.setupGrid();
 	down.draw();
 }
 
-function calculate(res, gb_size, data_set_name) {
+function calculate(res, gb_size, data_set_name, bres) {
+	if (bres) {
+		for (var i = 0; i < gb_size; ++ i)
+			res[i] -= 1;
+	}
+
 	if (res[res.length - 1] != 0)
 		return res[res.length - 1];
 
@@ -428,19 +722,31 @@ function extand(res_data, gene_size, gb_size, algorithm, data_set_name) {
 				for (var k = 0; k < gb_size; ++ k)
 					new_res.push(res_data[j][k]);
 
-				for (var avg = 0; avg < 5; ++ avg) {
+				var x = Math.floor(gb_size * Math.random());
+				var y = Math.floor(gb_size * Math.random());
+				while (y == x) {
+					y = Math.floor(gb_size * Math.random());
+				}
+				if (x > y) { var t = x; x = y; y = t;}
+
+				var chunk = new_res.splice(x, y - x + 1);
+
+				var z = Math.floor(new_res.length * Math.random());
+				var chunk1 = new_res.splice(0, z);
+
+				new_res = chunk1.concat(chunk, new_res);
+
+				for (avg = 0; avg < 5; ++ avg) {
 					var x = Math.floor(gb_size * Math.random());
 					var y = Math.floor(gb_size * Math.random());
 					while (y == x) {
 						y = Math.floor(gb_size * Math.random());
 					}
-					var t = new_res[x];
-					new_res[x] = new_res[y];
-					new_res[y] = t;
+					var t = new_res[x]; new_res[x] = new_res[y]; new_res[y] = t;
 				}
 
 				new_res.push(0);
-				greedy(new_res, gb_size, data_set_name);
+				//greedy(new_res, gb_size, data_set_name);
 
 				res_data.push(new_res);
 			}
@@ -450,18 +756,11 @@ function extand(res_data, gene_size, gb_size, algorithm, data_set_name) {
 
 function greedy(res, gb_size, data_set_name) {
 	new_res = [];
-	for (var k = 0; k < gb_size; ++ k)
+	for (var k = 0; k <= gb_size; ++ k)
 		new_res.push(res[k]);
-	new_res.push(0);
-	calculate(new_res, gb_size, data_set_name);
 
-	var cnt = 0;
 	for (var i = 0; i < gb_size; ++ i) {
-		if (cnt >= 100)
-			break;
 		for (var j = i + 1; j < gb_size; ++ j) {
-			if (cnt >= 100)
-				break;
 			var t = new_res[i];
 			new_res[i] = new_res[j];
 			new_res[j] = t;
@@ -471,16 +770,21 @@ function greedy(res, gb_size, data_set_name) {
 
 			var ans = calculate(new_res, gb_size, data_set_name);
 			
+			//console.log(old, ans);
+
 			if (ans >= old) {
 				t = new_res[i];
 				new_res[i] = new_res[j];
 				new_res[j] = t;
-			} else {
-				++ cnt;
+				new_res[gb_size] = old;
 			}
 		}
 	}
 
+	//console.log(res[gb_size], new_res[gb_size], res[gb_size] > new_res[gb_size]);
 	for (var k = 0; k <= gb_size; ++ k)
 		res[k] = new_res[k];
+	res[gb_size] = 0;
+	calculate(res, gb_size, data_set_name);
+	//console.log(res);
 }
