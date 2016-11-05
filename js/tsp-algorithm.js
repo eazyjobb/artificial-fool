@@ -318,30 +318,38 @@ $(document).ready(function () {
 
 		//console.log(res_data);
 
-		for (var cur = 0; cur < (iters / 20); ++ cur) {
-			for (var i = 0; i < 20; ++ i) {
+		var test = function(n, callback) {
+			var result = 0;
+			var i = 0;
+			(function() {
+				var st = +new Date();
+				while (i < n) {
+					extand(res_data, gene_size, gb_size, algorithm, data_set_name);
 
-				extand(res_data, gene_size, gb_size, algorithm, data_set_name);
+					res_data.sort(function(a, b) {
+						return calculate(a, gb_size, data_set_name) - calculate(b, gb_size, data_set_name);
+					});
+					while (res_data.length > gene_size)
+						res_data.pop();
 
-				res_data.sort(function(a, b) {
-					return calculate(a, gb_size, data_set_name) - calculate(b, gb_size, data_set_name);
-				});
-				while (res_data.length > gene_size)
-					res_data.pop();
+					console.log(n, [i, calculate(res_data[0], gb_size, data_set_name)]);
+					gene_data.push([i, calculate(res_data[0], gb_size, data_set_name)]);
+					switch_data(res_data[0], gb_size, data_set_name);
 
-				gene_data.push([cur * 20 + i, calculate(res_data[0], gb_size, data_set_name)]);
+					++ i;
 
-				console.log(i);
-			}
+					if ((+new Date()) - st < 100) {
+						result++;
+					} else {
+						setTimeout(arguments.callee, 0);
+						return;
+					}
+				}
+				callback && callback();
+			})();
+		};
 
-			for (var i = 0; i < gene_size; ++ i)
-				greedy(res_data[i], gb_size, data_set_name);
-			switch_data(res_data[0], gb_size, data_set_name);
-		}
-
-		down.setData([gene_data]);
-		down.setupGrid();
-		down.draw();
+		test(parseInt(iters));
 
 		//console.log(gene_data);
 	});
@@ -361,13 +369,14 @@ function rand_init(gene_size, gb_size, data_set_name) {
 			local_res.push(x);
 		}
 		local_res.push(0);
-		greedy(local_res, gb_size, data_set_name);
+		//greedy(local_res, gb_size, data_set_name);
 		res.push(local_res);
 	}
 	return res;
 }
 
 function switch_data(res, gb_size, data_set_name) {
+	console.log("CALL S", gene_data.length);
 	data = [];
 	for (var i = 0; i < gb_size - 1; ++ i) {
 		data.push([tsp_data[data_set_name][i * 3 + 2], tsp_data[data_set_name][i * 3 + 3]]);
@@ -376,6 +385,9 @@ function switch_data(res, gb_size, data_set_name) {
 	map.setData([data]);
 	map.setupGrid();
 	map.draw();
+	down.setData([gene_data]);
+	down.setupGrid();
+	down.draw();
 }
 
 function calculate(res, gb_size, data_set_name) {
@@ -406,7 +418,7 @@ function calculate(res, gb_size, data_set_name) {
 
 function extand(res_data, gene_size, gb_size, algorithm, data_set_name) {
 	if (algorithm != undefined) {
-		for (var i = 0; i < 10; ++ i)
+		//for (var i = 0; i < 10; ++ i)
 		for (var j = 0; j < gene_size; ++ j) {
 			var p = Math.random();
 			if (p <= mutate_rate) {
@@ -426,7 +438,7 @@ function extand(res_data, gene_size, gb_size, algorithm, data_set_name) {
 				}
 
 				new_res.push(0);
-				//greedy(new_res, gb_size, data_set_name);
+				greedy(new_res, gb_size, data_set_name);
 
 				res_data.push(new_res);
 			}
@@ -441,8 +453,13 @@ function greedy(res, gb_size, data_set_name) {
 	new_res.push(0);
 	calculate(new_res, gb_size, data_set_name);
 
-	for (var i = 0; i < gb_size; ++ i)
+	var cnt = 0;
+	for (var i = 0; i < gb_size; ++ i) {
+		if (cnt >= 100)
+			break;
 		for (var j = i + 1; j < gb_size; ++ j) {
+			if (cnt >= 100)
+				break;
 			var t = new_res[i];
 			new_res[i] = new_res[j];
 			new_res[j] = t;
@@ -456,8 +473,11 @@ function greedy(res, gb_size, data_set_name) {
 				t = new_res[i];
 				new_res[i] = new_res[j];
 				new_res[j] = t;
+			} else {
+				++ cnt;
 			}
 		}
+	}
 
 	for (var k = 0; k <= gb_size; ++ k)
 		res[k] = new_res[k];
