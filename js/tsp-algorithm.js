@@ -307,6 +307,8 @@ $(document).ready(function () {
 		}
 
 		var gb_size = tsp_data[data_set_name][0];
+		
+		$('#dimmer').show();
 
 		//console.log(data_set_name, gb_size);
 
