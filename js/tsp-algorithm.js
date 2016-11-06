@@ -629,7 +629,17 @@ $(document).ready(function () {
 					switch_data(res_data[0], gb_size, data_set_name);
 
 					++ i;
-
+					if (i == n) {
+						console.log(res_data[0], best_res);
+						swal({
+							title:"Result Error is " + ((res_data[0][gb_size] / best_res - 1.0) * 80) + '%',
+							html:true,
+							confirmButtonColor: "#057748",
+							confirmButtonText: "Ok, I got it",
+							closeOnConfirm: true,
+							animation: "slide-from-top"
+						});
+					}
 					if ((+new Date()) - st < 100) {
 						result++;
 					} else {
