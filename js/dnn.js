@@ -1,7 +1,7 @@
 var graph;
 
 var layer_size = 7;
-var node_size = [3, 7, 5, 8, 6, 7, 5];
+var node_size = [3, 4, 6, 3, 8, 4, 5];
 var node_pos = [];
 var lines = [];
 
@@ -46,8 +46,8 @@ var config = {
 				},
 				ticks: {
 					display: false,
-					min: 0,
-					max: 9
+					min: 0.7,
+					max: 8.3
 				},
 			}]
 		}
@@ -99,6 +99,7 @@ $(document).ready(function () {
 	}
 
 	graph = new Chart(ctx, config);
+	redraw(random_chunk());
 });
 
 function random_chunk() {
