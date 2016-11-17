@@ -614,7 +614,7 @@ $(document).ready(function () {
 			(function() {
 				var st = +new Date();
 				while (i < n) {
-					extand(res_data, gene_size, gb_size, algorithm, data_set_name);
+					extand(res_data, gene_size, gb_size, algorithm, data_set_name, i);
 					if (view > 0)
 						greedy(res_data[0], gb_size, data_set_name);
 					res_data.sort(function(a, b) {
@@ -632,7 +632,7 @@ $(document).ready(function () {
 					if (i == n) {
 						console.log(res_data[0], best_res);
 						swal({
-							title:"Result Error is " + ((res_data[0][gb_size] / best_res - 1.0) * 80) + '%',
+							title:"Result Error is " + ((res_data[0][gb_size] / best_res - 1.0) * 100) + '%',
 							html:true,
 							confirmButtonColor: "#057748",
 							confirmButtonText: "Ok, I got it",
@@ -732,8 +732,8 @@ function calculate(res, gb_size, data_set_name, bres) {
 	return ans;
 }
 
-function extand(res_data, gene_size, gb_size, algorithm, data_set_name) {
-	if (algorithm != undefined) {
+function extand(res_data, gene_size, gb_size, algorithm, data_set_name, iters) {
+	if (algorithm == 0) {
 		for (var i = 0; i < 2; ++ i) {
 		for (var j = 0; j < gene_size; ++ j) {
 			var p = Math.random();
@@ -783,6 +783,72 @@ function extand(res_data, gene_size, gb_size, algorithm, data_set_name) {
 				res_data.push(new_res);
 			}
 		}
+		}
+	} else {
+		var acp = Math.pow(0.95, iters);
+		for (var j = 0; j < gene_size; ++ j) {
+			new_res = [];
+			for (var k = 0; k < gb_size; ++ k)
+				new_res.push(res_data[j][k]);
+
+			var x = Math.floor(gb_size * Math.random());
+			var y = Math.floor(gb_size * Math.random());
+			while (y == x) {
+				y = Math.floor(gb_size * Math.random());
+			}
+			if (x > y) { var t = x; x = y; y = t;}
+
+			var chunk = new_res.splice(x, y - x + 1);
+
+			var z = Math.floor(new_res.length * Math.random());
+			var chunk1 = new_res.splice(0, z);
+
+			new_res = chunk1.concat(chunk, new_res);
+			new_res.push(0);
+
+			calculate(new_res, gb_size, data_set_name);
+
+			var acc = false;
+			if (new_res[gb_size] >= calculate(res_data[j], gb_size, data_set_name)) {
+				var p = Math.random();
+				if (p <= acp)
+					acc = true;
+			} else acc = true;
+
+			if (acc) {
+				res_data.push(new_res);
+			}
+		}
+		for (var j = 0; j < gene_size; ++ j) {
+			var p = Math.random();
+			if (p <= mutate_rate) {
+				new_res = [];
+				for (var k = 0; k < gb_size; ++ k)
+					new_res.push(res_data[j][k]);
+
+				for (avg = 0; avg < 20; ++ avg) {
+					var x = Math.floor(gb_size * Math.random());
+					var y = Math.floor(gb_size * Math.random());
+					while (y == x) {
+						y = Math.floor(gb_size * Math.random());
+					}
+					var t = new_res[x]; new_res[x] = new_res[y]; new_res[y] = t;
+				}
+
+				new_res.push(0)
+				calculate(new_res, gb_size, data_set_name);
+
+				var acc = false;
+				if (new_res[gb_size] >= calculate(res_data[j], gb_size, data_set_name)) {
+					var p = Math.random();
+					if (p <= acp)
+						acc = true;
+				} else acc = true;
+
+				if (acc) {
+					res_data.push(new_res);
+				}
+			}
 		}
 	}
 }
