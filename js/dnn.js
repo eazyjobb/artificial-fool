@@ -82,8 +82,8 @@ $(document).ready(function () {
 				lines[j].push(NaN);
 	}
 	
-	console.log(node_pos);
-	console.log(lines);
+//	console.log(node_pos);
+//	console.log(lines);
 
 	for (var i = 0; i < 8; ++ i) {
 		config.data.datasets.push({
@@ -116,7 +116,34 @@ function random_chunk() {
 }
 
 function redraw(networks) {
-	while (config.data.datasets.length > 8)
+	while (config.data.datasets.length)
 		config.data.datasets.pop();
+
+	var nanArr = [];
+
+	for (var j = 1; j < layer_size; ++ j) {
+		var i = j - 1;
+		for (var x = 0; x < node_size[i]; ++ x) {
+			for (var y = 0; y < node_size[j]; ++ y) {
+				var color = Math.floor(255 * (1 - networks[i][x][y]));
+//				console.log(color);
+				config.data.datasets.push({
+					lineTension: 0,
+					backgroundColor: chartColors.red,
+					borderColor: 'rgb(' + color + ',' + color + ',' + color + ')',
+					pointRadius: 3,
+					pointHoverRadius: 3,
+					pointStyle: 'circle',
+					data: nanArr.concat(node_pos[i][x], node_pos[j][y]),
+					fill: false
+				});
+			}
+		}
+
+		nanArr.push(NaN);
+	}
+
 	graph.update();
+
+	return true;
 }
