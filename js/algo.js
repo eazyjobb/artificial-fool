@@ -38,6 +38,8 @@ $(document).ready(function () {
 		calculate();
 	});
 	$('#rand-data').click(function () {
+		num_circle = Math.floor((Math.random() * 0.7 + 0.3) * 3) + 1;
+		num_rad = Math.floor((Math.random() * 0.7 + 0.3) * 3) + 1;
 		canvas.clearRect(0, 0, width, height);
 		num_group_P = Math.floor($('input[name=size-selection]').val() / (num_circle + num_rad));
 		data = rand_data();
@@ -230,13 +232,16 @@ var color = ["rgb(153, 102, 204)", "rgb(233, 240, 29)", "rgb(0, 255, 128)", "rgb
 
 function colored(seed) {
 	var thread = function(callback) {
-		var x = 0;
+		var x = 0, y = 0;
+		var index = 0;
 		(function() {
 			var st = +new Date();
-			while (x < width) {
+			while (index < data.length) {
 				//console.log(x);
 
-				for (var y = 0; y < height; ++ y) {
+				x = data[index][0];
+				y = data[index][1];
+				//for (var y = 0; y < height; ++ y) {
 					canvas.beginPath();
 					var dis = distant(x, y, seed[0][0], seed[0][1]), col = 0;
 					for (var i = 1; i < num_K; ++ i) {
@@ -246,19 +251,23 @@ function colored(seed) {
 							col = i;
 						}
 					}
-					canvas.strokeStyle = color[col];
-					canvas.arc(x, y, 1 , 0, 2 * Math.PI);
-					canvas.stroke();
-					canvas.closePath();
-				}
 
-				++ x;
+					canvas.fillStyle = color[col]
+					canvas.strokeStyle = color[col];
+					canvas.arc(x, y, 2 , 0, 2 * Math.PI);
+					canvas.stroke();
+					canvas.fill();
+					canvas.closePath();
+				//}
+
+				++ index;
+				//++ x;
 				if ((+new Date()) - st >= 100) {
 					setTimeout(arguments.callee, 0);
 					return;
 				}
 			}
-			callback && callback();
+			//callback && callback();
 		})();
 	}(function () {
 		paint(data);
