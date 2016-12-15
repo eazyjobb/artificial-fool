@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+        <link rel="stylesheet" type="text/css" href="css/page.css" />
+        <link href="css/semantic/semantic.min.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" type="text/css" href="css/sweetalert.css">
+    </head>
+    <body> <div class="ui grid container">
+
+<div class="ui row" style="margin-top: 50px;">
+    <div class="ui sixteen wide column">
+        <div class="ui center aligned huge header">
+            K-Means - Artificial Fool
+        </div>
+    </div>
+</div>
+
+<div class="ui row">
+
+    <div class="ui sixteen wide column center aligned">
+        <div id="dimmer" style="z-index: 10000; position: absolute; top: 0px; left:0px; display: none; background-color: rgba(0, 0, 0, 0.54); height:100%; width:100%;"> </div>
+
+        <div class="ui selection dropdown">
+            <input name="size-selection" type="hidden">
+            <i class="dropdown icon"></i>
+            <div class="default text">Scale</div>
+            <div class="menu">
+                <div class="item" data-value="100">100 points</div>
+                <div class="item" data-value="500">500 points</div>
+                <div class="item" data-value="1000">1000 points</div>
+                <div class="item" data-value="5000">5000 points</div>
+            </div>
+        </div>
+
+        <button class="positive ui button" id="rand-data">Generate Data</button>
+        <button class="positive ui button" id="calculate">Calculate</button>
+    </div>
+
+</div>
+    	
+        <div class="ui row grid">
+        	<div class="ui sixteen wide column center aligned">
+    	       	<canvas id="myCanvas" width="800" height="600" style="border: 5px solid grey;"></canvas>
+	        </div>
+        </div>
+
+<div class="ui row">
+    <div class="ui ten wide column">
+        <span>Copyright &copy; 2016 Artificial Fool</span>
+    </div>
+</div>
+
+</div>
+
+    <script src="js/jquery-3.0.0.js" type="text/javascript" charset="utf-8"></script>
+    <script language="javascript" type="text/javascript" src="js/sweetalert.min.js"> </script>
+    <script language="javascript" type="text/javascript" src="css/semantic/semantic.min.js"></script>
+    <script type="text/javascript" src="js/algo.js"></script>
+</body>
+</html>
