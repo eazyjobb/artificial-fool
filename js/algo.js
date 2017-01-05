@@ -5,6 +5,12 @@ var circle_close_fact = 80, rad_close_fact = 100;
 var canvas, old = [];
 var data, iter_col;
 
+/////////////////////////////////////////////////////////////////////
+//
+//
+// UI、交互事件、输入检查
+//
+
 $(document).ready(function () {
 	$('.ui.dropdown').dropdown();
 	$('#calculate').click(function () {
@@ -37,6 +43,7 @@ $(document).ready(function () {
 
 		calculate();
 	});
+
 	$('#rand-data').click(function () {
 		num_circle = Math.floor((Math.random() * 0.7 + 0.3) * 3) + 1;
 		num_rad = Math.floor((Math.random() * 0.7 + 0.3) * 3) + 1;
@@ -68,6 +75,11 @@ function random() {
 	return Math.random() * 2 - 1.0;
 }
 
+///////////////////////////
+//
+// 随机数据集合
+//
+
 function rand_data() {
 	var res = [];
 
@@ -76,6 +88,9 @@ function rand_data() {
 	for (var i = 0; i < num_circle; ++ i) {
 		var core_x, core_y;
 
+		/////////////////////////////////
+		// 随机圆心
+		//
 		do {
 			core_x = Math.floor(Math.random() * width);
 			core_y = Math.floor(Math.random() * height);
@@ -92,6 +107,10 @@ function rand_data() {
 
 		//var own_set = [];
 		console.log([core_x, core_y]);
+
+		////////////////////////////////////
+		// 围绕圆心生成 圆形的数据集合
+		//
 
 		for (var j = 0; j < num_group_P; ++ j) {
 			var length = Math.random() * circle_close_fact;
@@ -117,6 +136,9 @@ function rand_data() {
 	for (var i = 0; i < num_rad; ++ i) {
 		var core_x, core_y;
 
+		/////////////////////////////////
+		// 随机圆心
+		//
 		do {
 			core_x = Math.floor(Math.random() * width);
 			core_y = Math.floor(Math.random() * height);
@@ -132,6 +154,10 @@ function rand_data() {
 		//var own_set = [];
 		old.push([core_x, core_y]);
 		console.log([core_x, core_y]);
+
+		////////////////////////////////////
+		// 围绕圆心生成 圆周的数据集合
+		//
 
 		for (var j = 0; j < num_group_P; ++ j) {
 			var length = (Math.random() * 0.2 + 0.8) * rad_close_fact;
@@ -158,25 +184,36 @@ function rand_data() {
 	return res;
 }
 
+///////////////////////////////////////////////
+//
+// k Means 核心运算过程
+//
 
 function calculate() {
 	console.log(old);
 	var seed = [];
+
+	//////////////////////////////////
+	// 初始点随机生成
+	//
+
 	for (var i = 0; i < num_K; ++ i) {
 		var index = Math.floor(Math.random() * data.length);
-		if (i < old.length)
-			seed.push([old[i][0], old[i][1]]);
-		else
-			seed.push([data[index][0], data[index][1]]);
+		seed.push([data[index][0], data[index][1]]);
 	}
 
 	var aold = [];
 	for (var haha = 0; haha < 3000; ++ haha) {
 		aold = seed.concat();
+
+		////////////////
+		// 迭代
 		iter(seed);
 
 		console.log(haha, seed);
 
+		////////////////////////
+		// 检查是否收敛
 		var flag = true;
 		for (var k = 0; k < num_K; ++ k)
 			if (aold[k][0] != seed[k][0] || aold[k][1] != seed[k][1])
@@ -188,11 +225,16 @@ function calculate() {
 	colored(seed);
 }
 
+///////////////////////////////
+// 迭代的核心过程
+//
 function iter(seed) {
 	var count = new Array(num_K);
 	for (var k = 0; k < num_K; ++ k)
 		count[k] = 0;
 
+	/////////////////////////////
+	// 计算个点所属的集合
 	for (var k = 0; k < data.length; ++ k) {
 		var dis = distant(data[k][0], data[k][1], seed[0][0], seed[0][1]), col = 0;
 		for (var i = 1; i < num_K; ++ i) {
@@ -214,6 +256,9 @@ function iter(seed) {
 		else
 			console.log("BAD K", k);
 
+	////////////////////////////
+	// 更新中心点的坐标
+	//
 	for (var k = 0; k < data.length; ++ k) {
 		seed[iter_col[k]][0] += data[k][0];
 		seed[iter_col[k]][1] += data[k][1];
@@ -227,9 +272,14 @@ function iter(seed) {
 	//console.log(seed);
 }
 
+
+//绘图颜色常量
 var color = ["rgb(153, 102, 204)", "rgb(233, 240, 29)", "rgb(0, 255, 128)", "rgb(221, 240, 237)",
 			 "rgb(224, 128, 49)", "rgb(25, 148, 117)", "rgb(73, 90, 128)", "rgb(242, 117, 63)"];
 
+//////////////////////////
+// UI绘图 以及 线程管理
+//
 function colored(seed) {
 	var thread = function(callback) {
 		var x = 0, y = 0;
@@ -274,6 +324,8 @@ function colored(seed) {
 	});
 }
 
+////////////////////
+// 求距离
 function distant(x1,y1,x2,y2) {
 	var x3 = (x1 - x2); x3 = x3 * x3;
 	var y3 = (y1 - y2); y3 = y3 * y3;
