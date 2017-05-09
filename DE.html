@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>REPLACE</title>
+
+	<link href="css/semantic/semantic.min.css" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" type="text/css" href="css/sweetalert.css">
+
+	<script language="javascript" type="text/javascript" src="js/jquery-3.0.0.js"></script>
+	<script language="javascript" type="text/javascript" src="css/semantic/semantic.min.js"></script>
+	<script language="javascript" type="text/javascript" src="js/jquery.flot.js"></script>
+	<script language="javascript" type="text/javascript" src="js/sweetalert.min.js"> </script>
+	<script language="javascript" type="text/javascript">
+		$(document).ready(function () {
+			$('.ui.dropdown').dropdown();
+		});
+	</script>
+
+	<script language="javascript" type="text/javascript" src="js/de-ui.js"></script>
+	<script language="javascript" type="text/javascript" src="js/de-data.js"></script>
+	<script language="javascript" type="text/javascript" src="js/de-algorithm.js"></script>
+	<!--script language="javascript" type="text/javascript" src="js/tsp-algorithm.js"> </script-->
+
+	<!-- put your algorithm js here, do not modify anything related to ui, except me-->
+</head>
+
+<body> <div class="ui grid container">
+
+<div class="ui row" style="margin-top: 50px;">
+	<div class="ui sixteen wide column">
+		<div class="ui center aligned huge header">
+			REPLACE
+		</div>
+	</div>
+</div>
+
+<div class="ui row">
+
+	<div class="ui sixteen wide column center aligned">
+		<div id="dimmer" style="z-index: 10000; position: absolute; top: 0px; left:0px; display: none; background-color: rgba(0, 0, 0, 0.54); height:100%; width:100%;"> </div>
+		<div class="ui selection dropdown">
+			<input name="data-selection" type="hidden">
+			<i class="dropdown icon"></i>
+			<div class="default text">Data Set</div>
+			<div class="menu">
+				<div class="item" data-value="0">ch130</div>
+				<div class="item" data-value="1">ch150</div>
+			</div>
+		</div>
+		<div class="ui selection dropdown">
+			<input name="size-selection" type="hidden">
+			<i class="dropdown icon"></i>
+			<div class="default text">generation size</div>
+			<div class="menu">
+				<div class="item" data-value="100">100 samples</div>
+				<div class="item" data-value="500">500 samples</div>
+				<div class="item" data-value="1000">1000 samples</div>
+				<div class="item" data-value="5000">5000 samples</div>
+			</div>
+		</div>
+		<div class="ui selection dropdown">
+			<input name="iter-selection" type="hidden">
+			<i class="dropdown icon"></i>
+			<div class="default text">Number of Interation</div>
+			<div class="menu">
+				<div class="item" data-value="2">2 iters (debug option)</div>
+				<div class="item" data-value="20">20 iters</div>
+				<div class="item" data-value="50">50 iters</div>
+				<div class="item" data-value="100">100 iters</div>
+				<div class="item" data-value="500">500 iters</div>
+				<div class="item" data-value="1000">1000 iters</div>
+			</div>
+		</div>
+		<button class="positive ui button" id="calculate">Calculate</button>
+	</div>
+
+</div>
+
+<div class="ui row grid">
+	<div class="ui sixteen wide column center aligned huge header"> Answers of Each Iterations </div>
+
+	<div class="ui sixteen wide column">
+		<div id="ans" style="height:100%; width:100%;">
+			<table class="ui celled table">
+				<thead> <tr>
+					<th>Header</th>
+					<th>Header</th>
+					<th>Header</th>
+					<th>Header</th>
+					<th>Header</th>
+				</tr> </thead>
+				<tbody>
+					<tr>
+						<td> <div class="ui ribbon label">First</div> </td>
+						<td> Cell </td>
+						<td> Cell </td>
+						<td> Cell </td>
+						<td> Cell </td>
+					</tr>
+					<tr>
+						<td> <div class="ui ribbon label">First</div> </td>
+						<td> Cell </td>
+						<td> Cell </td>
+						<td> Cell </td>
+						<td> Cell </td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<div class="ui sixteen wide column center aligned huge header"> Best Answer </div>
+
+	<div class="ui sixteen wide column">
+		<div id="best-ans" style="height:100%; width:100%;">
+			<table class="ui celled table">
+				<thead> <tr>
+					<th>Header</th>
+					<th>Header</th>
+					<th>Header</th>
+					<th>Header</th>
+					<th>Header</th>
+				</tr> </thead>
+				<tbody>
+					<tr>
+						<td> <div class="ui ribbon label">First</div> </td>
+						<td> Cell </td>
+						<td> Cell </td>
+						<td> Cell </td>
+						<td> Cell </td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="ui sixteen wide column center aligned huge header"> Result </div>
+	<div class="ui sixteen wide column" style="min-height: 550px;">
+		<div id="res-down" style="height:100%; width:100%;"> </div>
+	</div>
+</div>
+
+<div class="ui row">
+	<div class="ui ten wide column">
+		<span>Copyright &copy; 2017 REPLACE</span>
+	</div>
+</div>
+
+</div> </body>
+</html>
