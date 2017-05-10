@@ -18,16 +18,19 @@ $(document).ready(function () {
 
 		ui_init();
 
-		calculation(parseInt(data_set_name), parseInt(gene_size), parseInt(iters),
-			swal({
+		calculation(parseInt(data_set_name), parseInt(gene_size), parseInt(iters), undefined);
+
+		/*
+		swal({
 				title:"Calculation finished",
 				html:true,
 				confirmButtonColor: "#057748",
 				confirmButtonText: "See the result",
 				closeOnConfirm: true,
 				animation: "slide-from-top"
-			})
-		);
+		});
+		*/
+
 	});
 
 	down = $.plot("#res-down", []);
@@ -55,7 +58,7 @@ function ui_init() {
 }
 
 function pump_data_to_ui(res) {
-	new_f = f(res);
+	new_f = F(res);
 
 	if (best_ans === undefined || new_f < best_ans_f) {
 		best_ans = res;
