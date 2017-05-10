@@ -19,9 +19,27 @@ var calculation = function(dataset, pop, n, callback) {
 
 				vnorm = eval_v(population); //console.log(vnorm);
 				fnorm = eval_f(population); //console.log(fnorm);
-				dx = eval_d(vnorm, fnorm, rf); console.log(dx);
+				dx = eval_d(vnorm, fnorm, rf); //console.log(dx);
+				fpenalty = eval_fp(vnorm, fnorm, rf); //console.log(fpenalty);
+				console.log(rf);
 
-				population = population.sort(function(a, b) {return F(a) - F(b);}).slice(0, pop);
+				var id = [];
+				for (var j = 0; j < population.length; ++ j)
+					id.push(j);
+				id.sort(function(a, b) {return fpenalty[a] + dx[a] - fpenalty[b] - dx[b];});
+
+				//for (var j = 0; j < population.length; ++ j) {
+				//	console.log(
+				//		id[j], fpenalty[id[j]], f(population[id[j]]), feasible(population[id[j]]),
+				//		vnorm[id[j]]//, fnorm[id[j]], dx[id[j]]
+				//	);
+				//}
+				//console.log('-------------------------');
+
+				var new_population = [];
+				for (var j = 0; j < pop; ++ j)
+					new_population.push(population[id[j]].concat());
+				population = new_population;
 
 				var res = best_of(population);
 
@@ -51,7 +69,7 @@ function random_in_search_space() {
 		res = []
 
 		for (var i = 0; i < vec_size; ++ i)
-			res.push(Math.random() * MAX_RANGE - MAX_RANGE * 0.5);
+			res.push(Math.random() * MAX_RANGE[i] - 0.5 * MAX_RANGE[i] + START[i]);
 
 		if (feasible(res)) break;
 	} while (1);
@@ -81,12 +99,14 @@ function Mutate(population) {
 }
 
 function best_of(population) {
-	var res = population[0];
-	var val = F(population[0]);
+	var res = undefined;
+	var val = undefined;
 
-	for (var i = 1; i < population.length; ++ i) {
-		var new_val = F(population[i]);
-		if (new_val < val) {
+	for (var i = 0; i < population.length; ++ i) {
+		if (feasible(population[i]) == false)
+			continue;
+		var new_val = f(population[i]);
+		if (res === undefined || new_val < val) {
 			res = population[i];
 			val = new_val;
 		}
@@ -118,7 +138,7 @@ function eval_v(x) {
 	for (var i = 0; i < x.length; ++ i) {
 		var sum = 0.0;
 		for (var j = 0; j < g.length; ++ j)
-			sum += g[j](x[i]);
+			sum += Math.pow(OP, g[j](x[i]));
 		res.push(sum);
 	}
 
@@ -130,7 +150,7 @@ function eval_v(x) {
 
 	if (vmax == vmin) {
 		for (var i = 0; i < x.length; ++ i)
-			res[i] = 0.0;
+			res[i] = 1.0;
 	} else {
 		for (var i = 0; i < x.length; ++ i)
 			res[i] = (res[i] - vmin) / (vmax - vmin);
@@ -165,5 +185,15 @@ function eval_d(x, y, rf) {
 	var res = [];
 	for (var i = 0; i < x.length; ++ i)
 		res.push((x[i] * (1.0 - rf) + y[i] * rf));
+	return res;
+}
+
+function eval_fp(vnorm, fnorm, rf) {
+	var res = [];
+	for (var i = 0; i < vnorm.length; ++ i) {
+		var e = Math.exp(-1.0 * Math.pow((vnorm[i] - fnorm[i]), 2) / (2.0 * rf * rf));
+		var ans = e * (1.0 / (rf * Math.sqrt(2 * Math.PI)));
+		res.push(ans);
+	}
 	return res;
 }

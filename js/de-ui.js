@@ -1,10 +1,10 @@
 $(document).ready(function () {
 	$('#calculate').click(function () {
-		var data_set_name = $('input[name=data-selection]').val();
+		//var data_set_name = $('input[name=data-selection]').val();
 		var gene_size = $('input[name=size-selection]').val();
 		var iters = $('input[name=iter-selection]').val();
 
-		if (('' === data_set_name) || ('' === gene_size) || ('' === iters)) {
+		if (/*('' === data_set_name) || */('' === gene_size) || ('' === iters)) {
 			swal({
 				title:"Please, fill the blank first",
 				html:true,
@@ -18,7 +18,7 @@ $(document).ready(function () {
 
 		ui_init();
 
-		calculation(parseInt(data_set_name), parseInt(gene_size), parseInt(iters), undefined);
+		calculation(/*parseInt(data_set_name), */0, parseInt(gene_size), parseInt(iters), undefined);
 
 		/*
 		swal({
@@ -58,14 +58,17 @@ function ui_init() {
 }
 
 function pump_data_to_ui(res) {
-	new_f = F(res);
+	if (res != undefined) {
 
-	if (best_ans === undefined || new_f < best_ans_f) {
-		best_ans = res;
-		best_ans_f = new_f;
-		best_ans_iter = cur_iter;
-		refresh_best_ans();
-		refresh_ans_iter();
+		new_f = f(res);
+
+		if (best_ans === undefined || new_f < best_ans_f) {
+			best_ans = res;
+			best_ans_f = new_f;
+			best_ans_iter = cur_iter;
+			refresh_best_ans();
+			refresh_ans_iter();
+		}
 	}
 
 	refresh_result();

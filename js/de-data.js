@@ -1,12 +1,15 @@
 var rf = 0;
 
+var OP = 1.05;
+
 var vec_size = 10;
 var cur_iter = 0;
 
-var MAX_RANGE = 30.0;
+var MAX_RANGE = [5, 5, 5, 5, 5, 5, 5, 5, 5, 5];
+var START =     [2, 2, 9, 5, 1, 1, 1, 10, 8, 8];
 
-var CROSS_RATE = 0.5;
-var SCAL_FACTOR = 0.3;
+var CROSS_RATE = 0.7;
+var SCAL_FACTOR = 0.05;
 
 var best_ans = undefined;
 var best_ans_f = undefined;
@@ -14,9 +17,7 @@ var best_ans_iter = undefined;
 
 var history_bests = [];
 
-var vnorm, fnorm, dx;
-
-function sqr(x) {return x * x;}
+var vnorm, fnorm, dx, fpenalty;
 
 var f = function (x) {
 	res = x[0] * x[0] + x[1] * x[1] + x[0] * x[1] - 14.0 * x[0] - 16.0 * x[1] + (x[2] - 10.0) * (x[2] - 10.0) +
@@ -52,7 +53,3 @@ var g = [
 		return -3.0 * x[0] + 6.0 * x[1] + 12.0 * (x[8] - 8.0) * (x[8] - 8.0) - 7.0 * x[9];
 	}//7
 ];
-
-F = function(x) {
-	return f(x);
-}
