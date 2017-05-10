@@ -18,12 +18,9 @@
 		});
 	</script>
 
-	<script language="javascript" type="text/javascript" src="js/de-ui.js"></script>
 	<script language="javascript" type="text/javascript" src="js/de-data.js"></script>
+	<script language="javascript" type="text/javascript" src="js/de-ui.js"></script>
 	<script language="javascript" type="text/javascript" src="js/de-algorithm.js"></script>
-	<!--script language="javascript" type="text/javascript" src="js/tsp-algorithm.js"> </script-->
-
-	<!-- put your algorithm js here, do not modify anything related to ui, except me-->
 </head>
 
 <body> <div class="ui grid container">
@@ -52,12 +49,12 @@
 		<div class="ui selection dropdown">
 			<input name="size-selection" type="hidden">
 			<i class="dropdown icon"></i>
-			<div class="default text">generation size</div>
+			<div class="default text">population</div>
 			<div class="menu">
-				<div class="item" data-value="100">100 samples</div>
-				<div class="item" data-value="500">500 samples</div>
-				<div class="item" data-value="1000">1000 samples</div>
-				<div class="item" data-value="5000">5000 samples</div>
+				<div class="item" data-value="100">100</div>
+				<div class="item" data-value="500">500</div>
+				<div class="item" data-value="1000">1000</div>
+				<div class="item" data-value="5000">5000</div>
 			</div>
 		</div>
 		<div class="ui selection dropdown">
@@ -65,12 +62,12 @@
 			<i class="dropdown icon"></i>
 			<div class="default text">Number of Interation</div>
 			<div class="menu">
-				<div class="item" data-value="2">2 iters (debug option)</div>
-				<div class="item" data-value="20">20 iters</div>
-				<div class="item" data-value="50">50 iters</div>
-				<div class="item" data-value="100">100 iters</div>
-				<div class="item" data-value="500">500 iters</div>
-				<div class="item" data-value="1000">1000 iters</div>
+				<div class="item" data-value="2">2 (debug option)</div>
+				<div class="item" data-value="20">20</div>
+				<div class="item" data-value="50">50</div>
+				<div class="item" data-value="100">100</div>
+				<div class="item" data-value="500">500</div>
+				<div class="item" data-value="1000">1000</div>
 			</div>
 		</div>
 		<button class="positive ui button" id="calculate">Calculate</button>
@@ -79,33 +76,14 @@
 </div>
 
 <div class="ui row grid">
-	<div class="ui sixteen wide column center aligned huge header"> Answers of Each Iterations </div>
+	<div class="ui sixteen wide column center aligned huge header"> Historical Bests </div>
 
 	<div class="ui sixteen wide column">
-		<div id="ans" style="height:100%; width:100%;">
-			<table class="ui celled table">
+		<div style="height:100%; width:100%;">
+			<table id="ans" class="ui celled table">
 				<thead> <tr>
-					<th>Header</th>
-					<th>Header</th>
-					<th>Header</th>
-					<th>Header</th>
-					<th>Header</th>
 				</tr> </thead>
 				<tbody>
-					<tr>
-						<td> <div class="ui ribbon label">First</div> </td>
-						<td> Cell </td>
-						<td> Cell </td>
-						<td> Cell </td>
-						<td> Cell </td>
-					</tr>
-					<tr>
-						<td> <div class="ui ribbon label">First</div> </td>
-						<td> Cell </td>
-						<td> Cell </td>
-						<td> Cell </td>
-						<td> Cell </td>
-					</tr>
 				</tbody>
 			</table>
 		</div>
@@ -114,22 +92,12 @@
 	<div class="ui sixteen wide column center aligned huge header"> Best Answer </div>
 
 	<div class="ui sixteen wide column">
-		<div id="best-ans" style="height:100%; width:100%;">
-			<table class="ui celled table">
+		<div style="height:100%; width:100%;">
+			<table id="best-ans" class="ui celled table">
 				<thead> <tr>
-					<th>Header</th>
-					<th>Header</th>
-					<th>Header</th>
-					<th>Header</th>
-					<th>Header</th>
 				</tr> </thead>
 				<tbody>
 					<tr>
-						<td> <div class="ui ribbon label">First</div> </td>
-						<td> Cell </td>
-						<td> Cell </td>
-						<td> Cell </td>
-						<td> Cell </td>
 					</tr>
 				</tbody>
 			</table>
