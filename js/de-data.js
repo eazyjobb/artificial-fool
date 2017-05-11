@@ -8,16 +8,24 @@ var cur_iter = 0;
 var MAX_RANGE = [5, 5, 5, 5, 5, 5, 5, 5, 5, 5];
 var START =     [2, 2, 9, 5, 1, 1, 1, 10, 8, 8];
 
-var CROSS_RATE = 0.7;
-var SCAL_FACTOR = 0.05;
+var CROSS_RATE = 0.5;
+var SCAL_FACTOR = 0.2;
 
 var best_ans = undefined;
 var best_ans_f = undefined;
 var best_ans_iter = undefined;
 
 var history_bests = [];
+var rv = [];
 
 var vnorm, fnorm, dx, fpenalty;
+
+var rb = [
+2.17201138162702, 2.36364428655598, 8.77391588155975, 
+5.09596542736529, 0.990651471937976, 1.43058397145114, 
+1.32167416187636, 9.8287506140379, 8.28012148117864, 
+8.37590246299451
+];
 
 var f = function (x) {
 	res = x[0] * x[0] + x[1] * x[1] + x[0] * x[1] - 14.0 * x[0] - 16.0 * x[1] + (x[2] - 10.0) * (x[2] - 10.0) +

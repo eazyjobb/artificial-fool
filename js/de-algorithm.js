@@ -90,7 +90,7 @@ function Mutate(population) {
 		var new_gene = population[i].concat();
 		for (var j = 0; j < vec_size; ++ j)
 			if (Math.random() <= CROSS_RATE)
-				new_gene[j] = population[x3][j] + SCAL_FACTOR * (population[x1][j] - population[x2][j]);
+				new_gene[j] = (Math.random() / 10.0 + 0.95) * population[x3][j] + SCAL_FACTOR * (population[x1][j] - population[x2][j]);
 
 		res.push(new_gene);
 	}

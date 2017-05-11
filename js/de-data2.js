@@ -9,15 +9,18 @@ var MAX_RANGE = [5, 5, 5, 5, 5, 5, 5];
 var START =     [2, 2, 0, 4, 0, 1, 2];
 
 var CROSS_RATE = 1.0;
-var SCAL_FACTOR = 0.3;
+var SCAL_FACTOR = 0.2;
 
 var best_ans = undefined;
 var best_ans_f = undefined;
 var best_ans_iter = undefined;
 
 var history_bests = [];
+var rv = [];
 
 var vnorm, fnorm, dx, fpenalty;
+
+var rb = [2.330499, 1.951372, -0.4775414, 4.365726, -0.6244870, 1.038131, 1.594227];
 
 var f = function (x) {
 	res =

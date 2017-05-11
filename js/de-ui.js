@@ -102,7 +102,8 @@ function refresh_best_ans() {
 
 function refresh_result() {
 	history_bests.push([cur_iter, best_ans_f]);
-	down.setData([history_bests]);
+	rv.push([cur_iter, f(rb)]);
+	down.setData([history_bests, rv]);
 	down.setupGrid();
 	down.draw();
 }
